@@ -6,9 +6,9 @@ export class Contact {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @ManyToOne(() => User, user => user.contacts)
-    contact_id: User;
-
-    @ManyToOne(() => User, user => user.contactUserId)
-    user_id: User;
+    @ManyToOne(() => User, (user) => user.receivedContactRequests)
+    user: User; 
+  
+    @ManyToOne(() => User, (user) => user.sentContactRequests)
+    contact: User;
 }

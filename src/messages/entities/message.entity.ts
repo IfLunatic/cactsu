@@ -1,31 +1,26 @@
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Status } from "./message.status";
 
 
 @Entity()
 export class Message {
-    @PrimaryGeneratedColumn({name: 'message_id'})
-    id: number;
-    text: string;
+  @PrimaryGeneratedColumn({ name: 'message_id' })
+  id: number;
 
-    @ManyToOne(() => User, user => user.sentMessages)
-    sender: User;
+  text: string;
 
-    @ManyToOne(() => User, user => user.receivedMessages)
-    recipient: User;
+  @ManyToOne(() => User, (user) => user.sentMessages)
+  sender: User;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    date_sent: Date;
+  @ManyToOne(() => User, (user) => user.receivedMessages)
+  recipient: User;
 
-    @Column()
-    status: Status;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  sentDate: Date;
+
+  @Column()
+  status: Status;
 }
 
 
-enum Status {
-    sent,
-    delivered,
-    read
-}
-
-status: Status;

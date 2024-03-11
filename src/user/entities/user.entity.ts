@@ -4,39 +4,37 @@ import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "t
 
 @Entity()
 export class User {
-    
+
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'bytea'})
+    @Column({ type: 'bytea' })
     avatar: Buffer;
 
     @Column()
     phoneNumber: string;
-    
+
     @Column()
     username: string;
-    
+
     @Column()
     password: string;
-    
+
     @Column()
     name: string;
-    
+
     @Column()
     surname: string;
 
-    @Column({ type: 'json' })
-    @OneToMany(() => Contact, contact => contact.contact_id)
-    contacts: User[];
+    @OneToMany(() => Contact, (contact) => contact.user)
+    sentContactRequests: Contact[];
 
-    @Column({ type: 'json' })
-    @OneToMany(() => Contact, contact => contact.user_id)
-    contactUserId: User[];
+    @OneToMany(() => Contact, (contact) => contact.contact)
+    receivedContactRequests: Contact[];
 
-    @ManyToMany(() => Message, message => message.sender)
+    @ManyToMany(() => Message, (message) => message.sender)
     sentMessages: Message[];
-  
-    @ManyToMany(() => Message, message => message.recipient)
+
+    @ManyToMany(() => Message, (message) => message.recipient)
     receivedMessages: Message[];
 }
