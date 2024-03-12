@@ -8,6 +8,7 @@ export class Message {
   @PrimaryGeneratedColumn({ name: 'message_id' })
   id: number;
 
+  @Column()
   text: string;
 
   @ManyToOne(() => User, (user) => user.sentMessages)
