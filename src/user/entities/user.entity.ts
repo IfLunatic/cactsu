@@ -8,7 +8,7 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'bytea' })
+    @Column({ type: 'bytea', nullable: false, default: Buffer.from([]) })
     avatar: Buffer;
 
     @Column()
