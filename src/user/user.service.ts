@@ -1,15 +1,15 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>
+    @InjectRepository(User) private readonly userRepository: Repository<User>, private readonly jwtService: JwtService
     ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -29,11 +29,15 @@ export class UserService {
       name: createUserDto.name,
       surname: createUserDto.surname,
     })
-    
-    return {user}
+    const token = this.jwtService.sign({phoneNumber: createUserDto.phoneNumber});
+    return {user, token}
   };
 
-  findAll() {
-    return `This action returns all user`;
+  async findOne(phoneNumber: string) {
+    return await this.userRepository.findOne({
+      where: {
+        phoneNumber: phoneNumber
+      }
+    });
   }
 }
